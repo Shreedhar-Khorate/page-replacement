@@ -1,0 +1,88 @@
+/* Comparison Mode Styles */
+.comparison-mode {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.comparison-mode h3 {
+  margin: 0 0 16px 0;
+  color: #1f2937;
+  font-size: 18px;
+}
+
+.comparison-table {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background: #f9fafb;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+th {
+  padding: 12px 8px;
+  text-align: left;
+  font-weight: 600;
+  color: #374151;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+td {
+  padding: 12px 8px;
+  border-bottom: 1px solid #f3f4f6;
+  font-size: 14px;
+}
+
+tbody tr {
+  transition: background-color 0.3s;
+}
+
+tbody tr:hover {
+  background: #f9fafb;
+}
+
+tbody tr.best {
+  background: #f0fdf4 !important;
+  box-shadow: inset 0 0 0 1px #dcfce7;
+}
+
+.algo-name {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.hits {
+  color: #10b981;
+  font-weight: 600;
+}
+
+.faults {
+  color: #ef4444;
+  font-weight: 600;
+}
+
+.hit-ratio {
+  color: #0891b2;
+  font-weight: 600;
+}
+
+.fault-ratio {
+  color: #b45309;
+  font-weight: 600;
+}
+
+.no-data {
+  text-align: center;
+  color: #9ca3af;
+  padding: 20px;
+  font-style: italic;
+}

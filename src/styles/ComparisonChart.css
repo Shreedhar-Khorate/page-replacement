@@ -1,0 +1,55 @@
+/* Comparison Chart Styles */
+.comparison-chart {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.comparison-chart h3 {
+  margin: 0 0 20px 0;
+  color: #1f2937;
+  font-size: 18px;
+}
+
+.chart-bars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  gap: 16px;
+  height: 250px;
+}
+
+.chart-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.chart-value {
+  font-size: 16px;
+  font-weight: bold;
+  color: #3b82f6;
+}
+
+.chart-bar {
+  width: 60px;
+  background: linear-gradient(180deg, #3b82f6, #2563eb);
+  border-radius: 8px 8px 0 0;
+  transition: all 0.3s;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+}
+
+.chart-item:hover .chart-bar {
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  transform: scaleY(1.05);
+}
+
+.chart-label {
+  font-weight: 600;
+  color: #374151;
+  font-size: 14px;
+  text-align: center;
+}
