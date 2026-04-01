@@ -1,30 +1,32 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import '../styles/FrameDisplay.css';
 
 export function FrameDisplay({ frames, currentPage, status, replacedPage }) {
+  const statusColor = status === 'HIT' ? 'success' : 'danger';
+
   return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+    <div className="frame-display-wrapper">
+      <div className="frames-grid">
         {frames.length === 0 ? (
           <motion.div
-            className="col-span-full text-center py-12"
+            className="empty-memory"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
           >
-            <div className="text-4xl mb-4">📭</div>
-            <p className="text-slate-400">No pages in memory</p>
+            <div className="empty-icon">
+              <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+                <rect x="8" y="12" width="40" height="32" stroke="currentColor" strokeWidth="2" fill="none" rx="4" />
+                <line x1="8" y1="24" x2="48" y2="24" stroke="currentColor" strokeWidth="2" opacity="0.3" />
+              </svg>
+            </div>
+            <p className="empty-text">No pages in memory</p>
           </motion.div>
         ) : (
           frames.map((page, idx) => (
             <motion.div
               key={idx}
-              className={`memory-slot aspect-square flex items-center justify-center relative overflow-hidden ${
-                page === currentPage
-                  ? 'ring-2 ring-indigo-500/50 bg-indigo-500/10'
-                  : page === replacedPage
-                    ? 'ring-2 ring-red-500/50 bg-red-500/10'
-                    : ''
-              }`}
+              className={`memory-frame ${page === currentPage ? 'current' : ''} ${page === replacedPage ? 'replaced' : ''}`}
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{
@@ -35,17 +37,13 @@ export function FrameDisplay({ frames, currentPage, status, replacedPage }) {
                 damping: 20,
               }}
               whileHover={{
-                scale: 1.05,
+                scale: 1.08,
                 transition: { type: 'spring', stiffness: 400, damping: 10 },
               }}
             >
-              {/* Inner shadow for recessed effect */}
-              <div className="absolute inset-0 bg-gradient-to-br from-slate-700/20 to-slate-900/40 rounded-lg"></div>
-
-              {/* Page number */}
               <motion.span
-                className="relative z-10 text-4xl font-mono font-bold text-slate-200 text-center"
-                key={page} // Re-animate when page changes
+                className="frame-number"
+                key={page}
                 initial={{ scale: 0.5, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{
@@ -58,10 +56,9 @@ export function FrameDisplay({ frames, currentPage, status, replacedPage }) {
                 {page}
               </motion.span>
 
-              {/* Status indicator */}
               {page === currentPage && (
                 <motion.div
-                  className="absolute -top-1 -right-1 w-3 h-3 bg-indigo-500 rounded-full"
+                  className="status-indicator current-indicator"
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ type: 'spring', stiffness: 500 }}
@@ -70,7 +67,7 @@ export function FrameDisplay({ frames, currentPage, status, replacedPage }) {
 
               {page === replacedPage && (
                 <motion.div
-                  className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"
+                  className="status-indicator replaced-indicator"
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ type: 'spring', stiffness: 500 }}
@@ -81,26 +78,20 @@ export function FrameDisplay({ frames, currentPage, status, replacedPage }) {
         )}
       </div>
 
-      {/* Page Info */}
+      {/* Page Info Section */}
       <motion.div
-        className="flex items-center justify-between p-4 bg-slate-800/30 rounded-lg border border-white/5"
+        className="page-info-section"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
       >
-        <div className="flex items-center space-x-3">
-          <span className="text-sm text-slate-400">Current Page:</span>
-          <span className="font-mono text-lg font-semibold text-slate-200">
-            {currentPage}
-          </span>
+        <div className="info-card current-card">
+          <div className="info-label">Current Page</div>
+          <div className="info-value">{currentPage}</div>
         </div>
 
         <motion.div
-          className={`px-3 py-1 rounded-full text-xs font-medium ${
-            status === 'HIT'
-              ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
-              : 'bg-red-500/20 text-red-400 border border-red-500/30'
-          }`}
+          className={`status-badge ${statusColor}`}
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{
@@ -108,9 +99,10 @@ export function FrameDisplay({ frames, currentPage, status, replacedPage }) {
             stiffness: 500,
             delay: 0.2,
           }}
-          key={status} // Re-animate when status changes
+          key={status}
         >
-          {status}
+          <div className="status-dot"></div>
+          <span className="status-label">{status}</span>
         </motion.div>
       </motion.div>
     </div>

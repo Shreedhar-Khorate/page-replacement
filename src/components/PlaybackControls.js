@@ -1,5 +1,36 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import '../styles/PlaybackControls.css';
+
+const ResetIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" className="playback-icon">
+    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c0 .83-.67 1.5-1.5 1.5s-1.5-.67-1.5-1.5.67-1.5 1.5-1.5 1.5.67 1.5 1.5zm-7 0c0 .83-.67 1.5-1.5 1.5s-1.5-.67-1.5-1.5.67-1.5 1.5-1.5 1.5.67 1.5 1.5z" />
+  </svg>
+);
+
+const PreviousIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" className="playback-icon">
+    <path d="M6 6h2v12H6V6zm3.5 6l8.5 6V6l-8.5 6z" />
+  </svg>
+);
+
+const PlayIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" className="playback-icon">
+    <path d="M8 5v14l11-7z" />
+  </svg>
+);
+
+const PauseIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" className="playback-icon">
+    <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
+  </svg>
+);
+
+const NextIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" className="playback-icon">
+    <path d="M16 18h2V6h-2v12zM2 18l8.5-6L2 6v12z" />
+  </svg>
+);
 
 export function PlaybackControls({
   currentStep,
@@ -17,96 +48,92 @@ export function PlaybackControls({
   const progress = totalSteps > 0 ? (currentStep / totalSteps) * 100 : 0;
 
   return (
-    <div className="space-y-4">
+    <div className="playback-controls-container">
       {/* Step Info */}
-      <div className="flex items-center justify-between">
-        <span className="text-sm text-slate-400">
+      <div className="playback-step-info">
+        <span className="step-label">
           Step{' '}
-          <span className="font-mono font-semibold text-slate-200">
+          <span className="step-number">
             {currentStep}
           </span>{' '}
           of{' '}
-          <span className="font-mono font-semibold text-slate-200">
+          <span className="step-number">
             {totalSteps}
           </span>
         </span>
-        <div className="text-xs text-slate-500">
+        <div className="progress-percent">
           {Math.round(progress)}% complete
         </div>
       </div>
 
       {/* Progress Bar */}
-      <div className="w-full bg-slate-700 rounded-full h-2">
+      <div className="playback-progress-bar">
         <motion.div
-          className="bg-gradient-to-r from-indigo-500 to-indigo-400 h-2 rounded-full"
+          className="playback-progress-fill"
           style={{ width: `${progress}%` }}
           transition={{ duration: 0.3 }}
         />
       </div>
 
       {/* Control Buttons */}
-      <div className="flex items-center justify-center space-x-2">
+      <div className="playback-buttons">
         <motion.button
-          className="ghost-button px-3 py-2 text-sm"
+          className="playback-button reset-button"
           onClick={onReset}
           title="Reset to first step"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+          whileHover={{ scale: 1.08 }}
+          whileTap={{ scale: 0.92 }}
         >
-          <span className="text-lg">⏮️</span>
+          <ResetIcon />
+          <span>Reset</span>
         </motion.button>
 
         <motion.button
-          className={`ghost-button px-3 py-2 text-sm ${
-            !canGoPrevious ? 'opacity-50 cursor-not-allowed' : ''
+          className={`playback-button previous-button ${
+            !canGoPrevious ? 'disabled' : ''
           }`}
           onClick={onPrevious}
           disabled={!canGoPrevious}
-          title="Go to previous step"
-          whileHover={canGoPrevious ? { scale: 1.05 } : {}}
-          whileTap={canGoPrevious ? { scale: 0.95 } : {}}
+          title="Previous step"
+          whileHover={canGoPrevious ? { scale: 1.08 } : {}}
+          whileTap={canGoPrevious ? { scale: 0.92 } : {}}
         >
-          <span className="text-lg">⏪</span>
+          <PreviousIcon />
+          <span>Previous</span>
         </motion.button>
 
         <motion.button
-          className={`outline-button px-4 py-2 text-sm font-medium ${
-            isPlaying
-              ? 'bg-indigo-500/20 border-indigo-500 text-indigo-300'
-              : ''
-          }`}
+          className="playback-button play-pause-button active"
           onClick={onPlayPause}
           title={isPlaying ? 'Pause' : 'Play'}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+          whileHover={{ scale: 1.08 }}
+          whileTap={{ scale: 0.92 }}
         >
-          <span className="text-lg mr-1">{isPlaying ? '⏸️' : '▶️'}</span>
-          {isPlaying ? 'Pause' : 'Play'}
+          {isPlaying ? <PauseIcon /> : <PlayIcon />}
+          <span>{isPlaying ? 'Pause' : 'Play'}</span>
         </motion.button>
 
         <motion.button
-          className={`ghost-button px-3 py-2 text-sm ${
-            !canGoNext ? 'opacity-50 cursor-not-allowed' : ''
+          className={`playback-button next-button ${
+            !canGoNext ? 'disabled' : ''
           }`}
           onClick={onNext}
           disabled={!canGoNext}
-          title="Go to next step"
-          whileHover={canGoNext ? { scale: 1.05 } : {}}
-          whileTap={canGoNext ? { scale: 0.95 } : {}}
+          title="Next step"
+          whileHover={canGoNext ? { scale: 1.08 } : {}}
+          whileTap={canGoNext ? { scale: 0.92 } : {}}
         >
-          <span className="text-lg">⏩</span>
+          <NextIcon />
+          <span>Next</span>
         </motion.button>
       </div>
 
       {/* Speed Control */}
-      <div className="flex items-center space-x-3">
-        <label
-          htmlFor="speed"
-          className="text-sm text-slate-400 whitespace-nowrap"
-        >
-          Speed:
+      <div className="playback-speed-control">
+        <label htmlFor="speed" className="speed-label">
+          Animation Speed:
         </label>
-        <div className="flex-1">
+        <div className="speed-slider-wrapper">
           <input
             id="speed"
             type="range"
@@ -115,11 +142,11 @@ export function PlaybackControls({
             step="100"
             value={speed}
             onChange={(e) => onSpeedChange(parseInt(e.target.value))}
-            className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer slider"
+            className="speed-slider"
             title="Adjust animation speed"
           />
         </div>
-        <span className="text-sm font-mono text-slate-300 min-w-[3rem]">
+        <span className="speed-value">
           {speed}ms
         </span>
       </div>

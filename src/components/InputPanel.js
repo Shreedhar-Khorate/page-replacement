@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { parsePageInput, validateFrameCount } from '../utils';
+import '../styles/InputPanel.css';
 
 export function InputPanel({ onSimulate, isLoading }) {
   const [pagesInput, setPagesInput] = useState(
@@ -24,21 +25,26 @@ export function InputPanel({ onSimulate, isLoading }) {
   };
 
   return (
-    <div>
-      <h2 className="text-xl font-semibold text-slate-200 mb-6">
-        Configuration
-      </h2>
-      <form onSubmit={handleSimulate} className="space-y-6">
+    <motion.div
+      className="input-panel-wrapper"
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.6, delay: 0.1 }}
+    >
+      <div className="panel-header">
+        <h2 className="panel-title">Configuration</h2>
+        <p className="panel-subtitle">Set up your simulation</p>
+      </div>
+
+      <form onSubmit={handleSimulate} className="config-form">
         <motion.div
-          className="space-y-2"
+          className="form-group"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
+          transition={{ delay: 0.2 }}
         >
-          <label
-            htmlFor="pages"
-            className="block text-sm font-medium text-slate-300 mb-2"
-          >
+          <label htmlFor="pages" className="form-label">
+            <span className="label-icon">📝</span>
             Page Reference String
           </label>
           <textarea
@@ -47,25 +53,23 @@ export function InputPanel({ onSimulate, isLoading }) {
             onChange={(e) => setPagesInput(e.target.value)}
             placeholder="Enter page numbers separated by commas"
             disabled={isLoading}
-            className="w-full px-3 py-2 bg-slate-800/50 border border-white/10 rounded-lg text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 font-mono text-sm resize-none"
-            rows={3}
+            className="form-textarea"
+            rows={4}
           />
-          <p className="text-xs text-slate-500">
-            Example: 1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5
+          <p className="form-hint">
+            Example: 1, 2, 3, 4, 1, 2, 5
           </p>
         </motion.div>
 
         <motion.div
-          className="space-y-2"
+          className="form-group"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
+          transition={{ delay: 0.3 }}
         >
-          <label
-            htmlFor="frames"
-            className="block text-sm font-medium text-slate-300 mb-2"
-          >
-            Number of Frames
+          <label htmlFor="frames" className="form-label">
+            <span className="label-icon">💾</span>
+            Number of Frames (1-10)
           </label>
           <input
             id="frames"
@@ -75,22 +79,23 @@ export function InputPanel({ onSimulate, isLoading }) {
             value={frameCount}
             onChange={(e) => setFrameCount(e.target.value)}
             disabled={isLoading}
-            className="w-full px-3 py-2 bg-slate-800/50 border border-white/10 rounded-lg text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 font-mono"
+            className="form-input"
           />
-          <p className="text-xs text-slate-500">
-            Enter a number between 1 and 10
+          <p className="form-hint">
+            Memory frames available for pages
           </p>
         </motion.div>
 
         <AnimatePresence>
           {error && (
             <motion.div
-              className="p-3 bg-red-500/10 border border-red-500/20 rounded-lg"
+              className="error-alert"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
             >
-              <p className="text-sm text-red-400">{error}</p>
+              <span className="error-icon">⚠️</span>
+              <p className="error-text">{error}</p>
             </motion.div>
           )}
         </AnimatePresence>
@@ -98,23 +103,26 @@ export function InputPanel({ onSimulate, isLoading }) {
         <motion.button
           type="submit"
           disabled={isLoading}
-          className="w-full solid-button disabled:opacity-50 disabled:cursor-not-allowed"
+          className="submit-button"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
+          transition={{ delay: 0.4 }}
         >
           {isLoading ? (
-            <div className="flex items-center justify-center space-x-2">
-              <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-              <span>Running Simulation...</span>
+            <div className="loading-state">
+              <div className="spinner"></div>
+              <span>Simulating...</span>
             </div>
           ) : (
-            'Run Simulation'
+            <div className="button-content">
+              <span>Run Simulation</span>
+              <span className="button-arrow">→</span>
+            </div>
           )}
         </motion.button>
       </form>
-    </div>
+    </motion.div>
   );
 }

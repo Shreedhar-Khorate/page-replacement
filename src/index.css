@@ -1,31 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+* {
+  font-family: 'Inter', 'system-ui', '-apple-system', 'sans-serif';
+}
+
 @layer base {
-  * {
-    /* Removed invalid border-border class */
-  }
   body {
-    @apply bg-midnight text-slate-200 font-sans antialiased;
+    @apply bg-slate-950 text-slate-200 font-sans antialiased;
+    background: linear-gradient(135deg, #0f172a 0%, #1a2a3a 100%);
+  }
+
+  code,
+  pre,
+  .font-mono {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
   }
 }
 
 @layer components {
+  /* Card Styles */
   .glass-card {
-    @apply bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl;
+    @apply bg-gradient-to-br from-slate-950/40 to-slate-900/20 backdrop-blur-xl border border-slate-700/30 rounded-xl;
   }
 
+  /* Button Styles */
   .ghost-button {
-    @apply px-4 py-2 text-slate-300 border border-white/10 rounded-lg hover:bg-white/5 hover:border-white/20 transition-all duration-200;
+    @apply px-4 py-2 text-slate-300 border border-slate-700/50 rounded-lg hover:bg-slate-800/50 hover:border-slate-600 transition-all duration-200;
   }
 
   .outline-button {
-    @apply px-4 py-2 text-slate-300 border border-indigo-500/50 rounded-lg hover:bg-indigo-500/10 hover:border-indigo-500 transition-all duration-200;
+    @apply px-4 py-2 text-slate-300 border border-blue-500/50 rounded-lg hover:bg-blue-500/10 hover:border-blue-500 transition-all duration-200;
   }
 
   .solid-button {
-    @apply px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-all duration-200;
+    @apply px-4 py-2 bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-200 shadow-lg hover:shadow-xl;
   }
 
   .pill-badge {
@@ -33,45 +45,105 @@
   }
 
   .memory-slot {
-    @apply bg-slate-800/50 border border-white/5 rounded-lg p-4 shadow-inner;
+    @apply bg-slate-900/50 border border-slate-700/20 rounded-lg p-4 shadow-inner;
   }
 
   .timeline-scrubber {
-    @apply h-1 bg-white/10 rounded-full relative;
+    @apply h-1 bg-slate-700/50 rounded-full relative;
   }
 
   .timeline-marker {
-    @apply w-3 h-3 bg-indigo-500 rounded-full border-2 border-midnight absolute -top-1 transform -translate-x-1/2;
+    @apply w-3 h-3 bg-blue-500 rounded-full border-2 border-slate-950 absolute -top-1 transform -translate-x-1/2;
   }
 }
 
-/* Custom slider styling */
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(71, 85, 105, 0.4);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(71, 85, 105, 0.6);
+}
+
+/* Slider styling */
 .slider::-webkit-slider-thumb {
-  @apply appearance-none w-4 h-4 bg-indigo-500 rounded-full cursor-pointer shadow-lg;
+  @apply appearance-none w-4 h-4 bg-blue-500 rounded-full cursor-pointer shadow-lg;
 }
 
 .slider::-webkit-slider-thumb:hover {
-  @apply bg-indigo-400;
+  @apply bg-blue-400;
 }
 
 .slider::-moz-range-thumb {
-  @apply w-4 h-4 bg-indigo-500 rounded-full cursor-pointer border-0 shadow-lg;
+  @apply w-4 h-4 bg-blue-500 rounded-full cursor-pointer border-0 shadow-lg;
 }
 
 .slider::-moz-range-thumb:hover {
-  @apply bg-indigo-400;
+  @apply bg-blue-400;
 }
 
-/* Remove number input arrows */
-
-
+/* Number input arrows */
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-/* Firefox */
 input[type="number"] {
   -moz-appearance: textfield;
 }
+
+/* Animations */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Global styles */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  overscroll-behavior: none;
+}
+
+#root {
+  min-height: 100vh;
+}
+

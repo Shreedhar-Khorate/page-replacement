@@ -1,3 +1,4 @@
+export { Navbar } from './Navbar';
 export { InputPanel } from './InputPanel';
 export { FrameDisplay } from './FrameDisplay';
 export { PlaybackControls } from './PlaybackControls';

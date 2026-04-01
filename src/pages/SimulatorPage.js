@@ -1,15 +1,17 @@
 import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
+  Navbar,
   InputPanel,
   FrameDisplay,
   PlaybackControls,
   StatsPanel,
   StepTimeline,
-  ComparisonMode,
 } from '../components';
+import { ComparisonChart } from '../charts';
 import { useSimulation, useAutoPlay } from '../hooks';
 import { runFIFO, runLRU, runOptimal, runClock } from '../algorithms';
+import '../styles/SimulatorPageNew.css';
 
 export function SimulatorPage() {
   const [results, setResults] = useState(null);
@@ -30,7 +32,6 @@ export function SimulatorPage() {
     async (input) => {
       setIsLoading(true);
       try {
-        // Simulate async operation
         await new Promise((resolve) => setTimeout(resolve, 300));
 
         const fifoResult = runFIFO(input.pages, input.frameCount);
@@ -53,234 +54,246 @@ export function SimulatorPage() {
   const currentStepData = simulation.currentStepData;
 
   return (
-    <div className="min-h-screen bg-midnight p-6">
-      {/* Header */}
-      <motion.header
-        className="text-center mb-8"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-      >
-        <h1 className="text-5xl font-bold bg-gradient-to-r from-indigo-400 to-slate-300 bg-clip-text text-transparent mb-3">
-          Page Replacement Simulator
-        </h1>
-        <p className="text-slate-400 text-xl">
-          Professional algorithm visualization and analysis
-        </p>
-      </motion.header>
+    <div className="simulator-page-wrapper">
+      {/* Navbar */}
+      <Navbar />
 
-      {/* Bento Grid Layout */}
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Left Sidebar - Algorithm Selection & Input */}
-        <motion.aside
-          className="lg:col-span-3 space-y-6"
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          <div className="glass-card p-6">
-            <InputPanel onSimulate={handleSimulate} isLoading={isLoading} />
-          </div>
-
-          <AnimatePresence>
-            {results && (
-              <motion.div
-                className="glass-card p-6"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.3 }}
-              >
-                <h3 className="text-lg font-semibold text-slate-200 mb-4 text-center">
-                  Algorithm
-                </h3>
-                <div className="space-y-2">
-                  {results.map((result, index) => (
-                    <motion.button
-                      key={result.name}
-                      className={`w-full text-left px-3 py-2 rounded-lg transition-all duration-200 ${
-                        selectedAlgorithm === result.name
-                          ? 'bg-indigo-500/20 border border-indigo-500/50 text-indigo-300'
-                          : 'ghost-button text-slate-300 hover:bg-white/5'
-                      }`}
-                      onClick={() => {
-                        setSelectedAlgorithm(result.name);
-                        simulation.reset();
-                      }}
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <div className="flex items-center justify-between">
-                        <span className="font-medium">{result.name}</span>
-                        {result.name === 'Optimal' && (
-                          <span className="pill-badge text-xs">Optimal</span>
-                        )}
-                      </div>
-                    </motion.button>
-                  ))}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </motion.aside>
-
-        {/* Main Content - Memory Frames Hero */}
-        <motion.main
-          className="lg:col-span-6 space-y-6"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-        >
+      {/* Main Content */}
+      <main className="simulator-main">
+        <div className="container-max">
           <AnimatePresence mode="wait">
             {results ? (
               <motion.div
-                key="simulation"
+                key="simulation-active"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.4 }}
+                className="simulation-grid"
               >
-                {/* Memory Frames Hero Section */}
-                <div className="glass-card p-8 mb-6">
-                  <h2 className="text-2xl font-bold text-slate-200 mb-6 text-center">
-                    Memory Frames
-                  </h2>
-                  <div className="memory-slot">
-                    {currentStepData ? (
-                      <FrameDisplay
-                        frames={currentStepData.frames}
-                        currentPage={currentStepData.page}
-                        status={currentStepData.status}
-                        replacedPage={currentStepData.replacedPage}
-                      />
-                    ) : (
-                      <div className="text-center py-12 text-slate-400">
-                        <div className="text-6xl mb-4">🧠</div>
-                        <p className="text-lg">No simulation data available</p>
-                        <p className="text-sm text-slate-500 mt-2">
-                          Run a simulation to visualize memory frames
-                        </p>
-                      </div>
-                    )}
+                {/* Left Column - Configuration & Algorithm Selection */}
+                <motion.section
+                  className="sidebar-left"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  <div className="section-card">
+                    <InputPanel onSimulate={handleSimulate} isLoading={isLoading} />
                   </div>
-                </div>
 
-                {/* Controls */}
-                <div className="glass-card p-6 mb-6">
-                  <PlaybackControls
-                    currentStep={simulation.currentStep}
-                    totalSteps={simulation.totalSteps}
-                    onPrevious={simulation.previousStep}
-                    onNext={
-                      autoPlay.isPlaying
-                        ? () => {} // No-op during auto play
-                        : simulation.nextStep
-                    }
-                    onReset={simulation.reset}
-                    canGoNext={simulation.canGoNext}
-                    canGoPrevious={simulation.canGoPrevious}
-                    isPlaying={autoPlay.isPlaying}
-                    onPlayPause={autoPlay.togglePlayPause}
-                    speed={autoPlay.speed}
-                    onSpeedChange={autoPlay.changeSpeed}
-                  />
-                </div>
+                  <motion.div
+                    className="section-card algorithm-selector"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                  >
+                    <div className="section-header">
+                      <h3 className="section-title">Select Algorithm</h3>
+                    </div>
+                    <div className="algorithm-buttons">
+                      {results.map((result, index) => (
+                        <motion.button
+                          key={result.name}
+                          className={`algo-button ${selectedAlgorithm === result.name ? 'active' : ''}`}
+                          onClick={() => {
+                            setSelectedAlgorithm(result.name);
+                            simulation.reset();
+                          }}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: index * 0.1 }}
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                        >
+                          <span className="algo-name">{result.name}</span>
+                          {result.name === 'Optimal' && (
+                            <span className="algo-badge">Best</span>
+                          )}
+                        </motion.button>
+                      ))}
+                    </div>
+                  </motion.div>
+                </motion.section>
 
-                {/* Timeline Scrubber */}
-                <div className="glass-card p-6">
-                  <StepTimeline
-                    steps={currentResult.steps}
-                    currentStep={simulation.currentStep}
-                    onStepClick={simulation.goToStep}
-                  />
-                </div>
+                {/* Center Column - Main Simulation Display */}
+                <motion.section
+                  className="main-content"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
+                >
+                  {/* Memory Section */}
+                  <div className="section-card">
+                    <div className="section-header">
+                      <h2 className="section-title">Memory Frames</h2>
+                      <span className="section-subtitle">
+                        Step {simulation.currentStep} of {simulation.totalSteps}
+                      </span>
+                    </div>
+                    <div className="memory-display">
+                      {currentStepData ? (
+                        <FrameDisplay
+                          frames={currentStepData.frames}
+                          currentPage={currentStepData.page}
+                          status={currentStepData.status}
+                          replacedPage={currentStepData.replacedPage}
+                        />
+                      ) : (
+                        <div className="empty-display">
+                          <p>No simulation data</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Controls Section */}
+                  <div className="section-card">
+                    <div className="section-header">
+                      <h3 className="section-title">Playback Controls</h3>
+                    </div>
+                    <PlaybackControls
+                      currentStep={simulation.currentStep}
+                      totalSteps={simulation.totalSteps}
+                      onPrevious={simulation.previousStep}
+                      onNext={
+                        autoPlay.isPlaying
+                          ? () => {}
+                          : simulation.nextStep
+                      }
+                      onReset={simulation.reset}
+                      canGoNext={simulation.canGoNext}
+                      canGoPrevious={simulation.canGoPrevious}
+                      isPlaying={autoPlay.isPlaying}
+                      onPlayPause={autoPlay.togglePlayPause}
+                      speed={autoPlay.speed}
+                      onSpeedChange={autoPlay.changeSpeed}
+                    />
+                  </div>
+
+                  {/* Timeline Section */}
+                  <div className="section-card">
+                    <div className="section-header">
+                      <h3 className="section-title">Step Timeline</h3>
+                    </div>
+                    <StepTimeline
+                      steps={currentResult.steps}
+                      currentStep={simulation.currentStep}
+                      onStepClick={simulation.goToStep}
+                    />
+                  </div>
+                </motion.section>
+
+                {/* Right Column - Statistics */}
+                <motion.section
+                  className="sidebar-right"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.5 }}
+                >
+                  <div className="section-card">
+                    <div className="section-header">
+                      <h3 className="section-title">Statistics</h3>
+                      <span className="section-subtitle">{selectedAlgorithm}</span>
+                    </div>
+                    <StatsPanel
+                      stats={currentResult?.stats}
+                      algorithmName={selectedAlgorithm}
+                    />
+                  </div>
+                </motion.section>
               </motion.div>
             ) : (
               <motion.div
-                key="welcome"
-                className="glass-card p-16 text-center min-h-[500px] flex flex-col justify-center"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.5 }}
+                key="welcome-screen"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="welcome-section"
               >
-                <div className="text-9xl mb-8">🚀</div>
-                <h2 className="text-4xl font-bold text-slate-200 mb-6 text-center">
-                  Page Replacement Simulator
-                </h2>
-                <p className="text-slate-400 text-xl mb-8 max-w-2xl mx-auto leading-relaxed text-center">
-                  Visualize and analyze page replacement algorithms in real-time.
-                  Compare FIFO, LRU, Optimal, and Clock algorithms with interactive
-                  step-by-step execution and comprehensive performance metrics.
-                </p>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-8">
-                  <div className="text-center p-4 rounded-lg bg-white/5 border border-white/10">
-                    <div className="text-3xl mb-2">🎯</div>
-                    <div className="font-semibold text-slate-200 text-sm">Optimal</div>
-                    <div className="text-xs text-slate-500 mt-1">Theoretical best</div>
-                  </div>
-                  <div className="text-center p-4 rounded-lg bg-white/5 border border-white/10">
-                    <div className="text-3xl mb-2">⚡</div>
-                    <div className="font-semibold text-slate-200 text-sm">LRU</div>
-                    <div className="text-xs text-slate-500 mt-1">Least recently used</div>
-                  </div>
-                  <div className="text-center p-4 rounded-lg bg-white/5 border border-white/10">
-                    <div className="text-3xl mb-2">🔄</div>
-                    <div className="font-semibold text-slate-200 text-sm">FIFO</div>
-                    <div className="text-xs text-slate-500 mt-1">First in, first out</div>
-                  </div>
-                  <div className="text-center p-4 rounded-lg bg-white/5 border border-white/10">
-                    <div className="text-3xl mb-2">🕐</div>
-                    <div className="font-semibold text-slate-200 text-sm">Clock</div>
-                    <div className="text-xs text-slate-500 mt-1">Second chance</div>
-                  </div>
+                <div className="section-card welcome-card">
+                  <motion.div
+                    className="welcome-content"
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    <div className="welcome-icon">
+                      <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+                        <rect x="10" y="20" width="60" height="40" stroke="currentColor" strokeWidth="2" fill="none" rx="6" />
+                        <line x1="10" y1="35" x2="70" y2="35" stroke="currentColor" strokeWidth="2" opacity="0.3" />
+                        <line x1="10" y1="50" x2="70" y2="50" stroke="currentColor" strokeWidth="2" opacity="0.3" />
+                        <circle cx="35" cy="42.5" r="3" fill="currentColor" opacity="0.6" />
+                        <circle cx="55" cy="42.5" r="3" fill="currentColor" opacity="0.6" />
+                      </svg>
+                    </div>
+                    <h1 className="welcome-title">Page Replacement Simulator</h1>
+                    <p className="welcome-subtitle">
+                      Visualize and analyze page replacement algorithms with interactive step-by-step execution
+                    </p>
+
+                    <div className="algorithms-grid">
+                      <div className="algo-info">
+                        <div className="algo-circle">1</div>
+                        <h4 className="algo-title">FIFO</h4>
+                        <p className="algo-desc">First In, First Out</p>
+                      </div>
+                      <div className="algo-info">
+                        <div className="algo-circle">2</div>
+                        <h4 className="algo-title">LRU</h4>
+                        <p className="algo-desc">Least Recently Used</p>
+                      </div>
+                      <div className="algo-info">
+                        <div className="algo-circle">3</div>
+                        <h4 className="algo-title">Optimal</h4>
+                        <p className="algo-desc">Theoretical Best</p>
+                      </div>
+                      <div className="algo-info">
+                        <div className="algo-circle">4</div>
+                        <h4 className="algo-title">Clock</h4>
+                        <p className="algo-desc">Second Chance</p>
+                      </div>
+                    </div>
+
+                    <p className="welcome-instruction">
+                      Configure your simulation using the panel →
+                    </p>
+                  </motion.div>
                 </div>
-                <div className="mt-8 text-slate-500 text-sm text-center">
-                  ← Configure your simulation parameters on the left panel to begin
-                </div>
+
+                <motion.div
+                  className="welcome-input-panel"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.3 }}
+                >
+                  <InputPanel onSimulate={handleSimulate} isLoading={isLoading} />
+                </motion.div>
               </motion.div>
             )}
           </AnimatePresence>
-        </motion.main>
 
-        {/* Right Sidebar - Stats & Comparison */}
-        <motion.aside
-          className="lg:col-span-3 space-y-6"
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6, delay: 0.6 }}
-        >
-          <AnimatePresence>
-            {results && (
-              <>
-                <motion.div
-                  className="glass-card p-6"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.2 }}
-                >
-                  <StatsPanel
-                    stats={currentResult?.stats}
-                    algorithmName={selectedAlgorithm}
-                  />
-                </motion.div>
-
-                <motion.div
-                  className="glass-card p-6"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.4 }}
-                >
-                  <ComparisonMode results={results} />
-                </motion.div>
-              </>
-            )}
-          </AnimatePresence>
-        </motion.aside>
-      </div>
+          {/* Comparison Chart Section - Full Width */}
+          {results && (
+            <motion.section
+              className="comparison-section"
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8 }}
+            >
+              <div className="section-header">
+                <h2 className="section-title">Algorithm Comparison Chart</h2>
+                <p className="section-subtitle">
+                  Compare performance metrics across all algorithms
+                </p>
+              </div>
+              <div className="chart-section-card">
+                <ComparisonChart results={results} />
+              </div>
+            </motion.section>
+          )}
+        </div>
+      </main>
     </div>
   );
 }
