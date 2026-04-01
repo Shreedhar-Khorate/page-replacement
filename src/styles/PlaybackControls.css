@@ -1,98 +1,125 @@
 /* Playback Controls Styles */
 .playback-controls {
-  background: white;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(148, 163, 184, 0.1);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  margin-bottom: 0;
 }
 
 .controls-group {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   margin-bottom: 20px;
   flex-wrap: wrap;
 }
 
 .btn-control {
-  padding: 10px 16px;
-  border: 2px solid #e5e7eb;
-  background: white;
-  color: #374151;
-  border-radius: 8px;
+  padding: 12px 20px;
+  border: 2px solid rgba(96, 165, 250, 0.3);
+  background: rgba(30, 41, 59, 0.8);
+  color: #cbd5e1;
+  border-radius: 10px;
   cursor: pointer;
-  font-weight: 600;
-  transition: all 0.3s;
-  font-size: 14px;
+  font-weight: 700;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .btn-control:hover:not(:disabled) {
-  background: #f3f4f6;
-  border-color: #3b82f6;
+  background: rgba(59, 130, 246, 0.2);
+  border-color: rgba(59, 130, 246, 0.6);
+  transform: translateY(-2px);
 }
 
 .btn-control.btn-play {
-  background: #3b82f6;
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
   color: white;
-  border-color: #3b82f6;
+  border-color: transparent;
+  box-shadow: 0 8px 16px rgba(59, 130, 246, 0.3);
+}
+
+.btn-control.btn-play:hover {
+  box-shadow: 0 12px 24px rgba(59, 130, 246, 0.4);
 }
 
 .btn-control.btn-play.playing {
-  background: #ef4444;
-  border-color: #ef4444;
+  background: linear-gradient(135deg, #ef4444 0%, #f97316 100%);
+  box-shadow: 0 8px 16px rgba(239, 68, 68, 0.3);
 }
 
 .btn-control:disabled {
-  opacity: 0.5;
+  opacity: 0.4;
   cursor: not-allowed;
 }
 
 .step-info {
-  margin-bottom: 16px;
+  margin-bottom: 18px;
+  background: rgba(30, 41, 59, 0.4);
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(96, 165, 250, 0.2);
 }
 
 .step-info span {
   display: block;
-  margin-bottom: 8px;
-  font-weight: 600;
-  color: #374151;
-  font-size: 14px;
+  margin-bottom: 6px;
+  font-weight: 700;
+  color: #cbd5e1;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.step-info span:last-child {
+  margin-bottom: 0;
 }
 
 .progress-bar {
   width: 100%;
   height: 8px;
-  background: #e5e7eb;
+  background: rgba(30, 41, 59, 0.6);
   border-radius: 8px;
   overflow: hidden;
+  border: 1px solid rgba(96, 165, 250, 0.2);
 }
 
 .progress-fill {
   height: 100%;
   background: linear-gradient(90deg, #3b82f6, #8b5cf6);
-  transition: width 0.3s ease;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
 }
 
 .speed-control {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
 }
 
 .speed-control label {
-  font-weight: 600;
-  color: #374151;
-  font-size: 14px;
-  min-width: 100px;
+  font-weight: 700;
+  color: #cbd5e1;
+  font-size: 13px;
+  min-width: 110px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .speed-control input[type='range'] {
   flex: 1;
   height: 6px;
   border-radius: 5px;
-  background: #e5e7eb;
+  background: rgba(30, 41, 59, 0.6);
   outline: none;
   -webkit-appearance: none;
+  border: 1px solid rgba(96, 165, 250, 0.2);
 }
 
 .speed-control input[type='range']::-webkit-slider-thumb {
@@ -101,25 +128,30 @@
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: #3b82f6;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
   cursor: pointer;
-  transition: background 0.3s;
+  transition: all 0.3s;
+  box-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
+  border: 2px solid rgba(255, 255, 255, 0.2);
 }
 
 .speed-control input[type='range']::-webkit-slider-thumb:hover {
-  background: #2563eb;
+  transform: scale(1.15);
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.6);
 }
 
 .speed-control input[type='range']::-moz-range-thumb {
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: #3b82f6;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
   cursor: pointer;
-  border: none;
-  transition: background 0.3s;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s;
+  box-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
 }
 
 .speed-control input[type='range']::-moz-range-thumb:hover {
-  background: #2563eb;
+  transform: scale(1.15);
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.6);
 }
