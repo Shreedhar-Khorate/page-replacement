@@ -18,10 +18,13 @@ export function useSimulation(simulationResult) {
     setCurrentStep((prev) => Math.max(prev - 1, 0));
   }, []);
 
-  const goToStep = useCallback((stepNumber) => {
-    const index = Math.max(0, Math.min(stepNumber - 1, steps.length - 1));
-    setCurrentStep(index);
-  }, [steps.length]);
+  const goToStep = useCallback(
+    (stepNumber) => {
+      const index = Math.max(0, Math.min(stepNumber - 1, steps.length - 1));
+      setCurrentStep(index);
+    },
+    [steps.length]
+  );
 
   const reset = useCallback(() => {
     setCurrentStep(0);

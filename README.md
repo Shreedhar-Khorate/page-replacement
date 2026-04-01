@@ -9,6 +9,7 @@ It allows users to simulate:
 * FIFO (First-In-First-Out)
 * LRU (Least Recently Used)
 * Optimal Page Replacement
+* Clock Page Replacement
 
 The application provides **step-by-step execution**, **real-time animations**, and **performance comparison**.
 
