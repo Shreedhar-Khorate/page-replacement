@@ -15,12 +15,14 @@ export function Navbar() {
         <div className="navbar-logo">
           <div className="logo-icon">
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-              <rect x="4" y="8" width="6" height="16" fill="currentColor" opacity="0.6" />
-              <rect x="13" y="4" width="6" height="20" fill="currentColor" opacity="0.8" />
-              <rect x="22" y="12" width="6" height="12" fill="currentColor" />
+              <rect x="4" y="6" width="24" height="16" rx="2" stroke="currentColor" strokeWidth="2" fill="none"/>
+              <rect x="8" y="10" width="16" height="8" rx="1" fill="currentColor" opacity="0.8"/>
+              <rect x="10" y="12" width="12" height="1" fill="currentColor"/>
+              <rect x="10" y="15" width="8" height="1" fill="currentColor"/>
+              <rect x="6" y="24" width="20" height="2" rx="1" fill="currentColor"/>
             </svg>
           </div>
-          <h1 className="logo-text">Page Replacement Simulator</h1>
+          <h1 className="logo-text">Page Replacement Algorithm Simulation</h1>
         </div>
 
         {/* Subtitle */}
