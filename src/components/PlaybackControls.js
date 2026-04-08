@@ -3,31 +3,32 @@ import { motion } from 'framer-motion';
 import '../styles/PlaybackControls.css';
 
 const ResetIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" className="playback-icon">
-    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c0 .83-.67 1.5-1.5 1.5s-1.5-.67-1.5-1.5.67-1.5 1.5-1.5 1.5.67 1.5 1.5zm-7 0c0 .83-.67 1.5-1.5 1.5s-1.5-.67-1.5-1.5.67-1.5 1.5-1.5 1.5.67 1.5 1.5z" />
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="playback-icon">
+    <path d="M1 4v6h6M23 20v-6h-6" />
+    <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15" />
   </svg>
 );
 
 const PreviousIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" className="playback-icon">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" className="playback-icon">
     <path d="M6 6h2v12H6V6zm3.5 6l8.5 6V6l-8.5 6z" />
   </svg>
 );
 
 const PlayIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" className="playback-icon">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" className="playback-icon">
     <path d="M8 5v14l11-7z" />
   </svg>
 );
 
 const PauseIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" className="playback-icon">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" className="playback-icon">
     <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
   </svg>
 );
 
 const NextIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" className="playback-icon">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" className="playback-icon">
     <path d="M16 18h2V6h-2v12zM2 18l8.5-6L2 6v12z" />
   </svg>
 );
