@@ -202,10 +202,13 @@ Frames: 3
 
 ## 🔮 Future Enhancements
 
-* Add more algorithms (LFU, Clock)
-* AI-based explanation
-* Export results (CSV/PNG)
-* Quiz mode
+•	Additional Algorithms: Implement LFU (Least Frequently Used), MFU (Most Frequently Used), and NRU (Not Recently Used) algorithms.
+•	AI-Based Explanations: Integrate a language model to provide natural-language step-by-step explanations of each replacement decision.
+•	Export Functionality: Allow users to export simulation traces as CSV and comparison charts as PNG/PDF.
+•	Quiz Mode: Add an interactive quiz mode where users predict the next page fault before each step is revealed.
+•	Working Set Model: Implement the Working Set model and page fault frequency tracking.
+•	Mobile Optimisation: Enhance touch-based interactions for tablet and phone users.
+
 
 ---
 
