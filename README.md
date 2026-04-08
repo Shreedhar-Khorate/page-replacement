@@ -210,12 +210,12 @@ Frames: 3
 •	Mobile Optimisation: Enhance touch-based interactions for tablet and phone users.
 
 
----
+----
 
 ## 📄 License
 
 This project is for educational purposes.
 
----
+----
 
 🎓 *Built to simplify Operating System concepts through visualization*
