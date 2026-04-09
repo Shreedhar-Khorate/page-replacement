@@ -3,7 +3,7 @@
   background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
   backdrop-filter: blur(12px);
   border: 1px solid rgba(71, 85, 105, 0.3);
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 28px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   min-height: 400px;
@@ -34,7 +34,6 @@
   flex: 1;
   position: relative;
   min-height: 300px;
-  max-width: 600px;
 }
 
 .chart-wrapper canvas {
