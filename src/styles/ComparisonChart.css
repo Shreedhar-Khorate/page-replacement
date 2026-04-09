@@ -34,6 +34,7 @@
   flex: 1;
   position: relative;
   min-height: 300px;
+  max-width: 600px;
 }
 
 .chart-wrapper canvas {
